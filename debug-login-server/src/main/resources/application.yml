@@ -1,0 +1,7 @@
+#server:
+#  port: 20090
+spring:
+  main:
+    banner-mode: "off"
+
+  mvc.pathmatch.matching-strategy: ant_path_matcher
