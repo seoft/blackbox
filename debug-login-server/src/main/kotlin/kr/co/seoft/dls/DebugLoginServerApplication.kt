@@ -1,8 +1,12 @@
 package kr.co.seoft.dls
 
+import kr.co.seoft.dls.model.SALT2
+import kr.co.seoft.dls.model.SALT3
 import org.slf4j.LoggerFactory
 import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication
+import org.springframework.core.io.FileSystemResource
+import java.io.File
 import java.util.*
 
 @SpringBootApplication
@@ -36,6 +40,9 @@ fun main(args: Array<String>) {
 	logger.info("###############################################################")
 	logger.info("##  Swagger UI page : http://127.0.0.1:$port/swagger-ui.html")
 	logger.info("###############################################################")
+
+	initSalt2()
+	initSalt3()
 }
 
 @Throws(Exception::class)
@@ -52,3 +59,12 @@ fun parsePort(args: String): Int {
 	}
 }
 
+private fun initSalt2() {
+	val file = File(FileSystemResource("src/main/resources/salt2.txt").file.absolutePath)
+	SALT2 = file.bufferedReader().readText()
+}
+
+private fun initSalt3() {
+	val file = File(FileSystemResource("src/main/resources/salt3.txt").file.absolutePath)
+	SALT3 = file.bufferedReader().readText()
+}

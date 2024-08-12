@@ -17,6 +17,8 @@ bin/
 !**/src/main/**/bin/
 !**/src/test/**/bin/
 src/main/resources/accounts.txt
+src/main/resources/salt2.txt
+src/main/resources/salt3.txt
 
 ### IntelliJ IDEA ###
 .idea
