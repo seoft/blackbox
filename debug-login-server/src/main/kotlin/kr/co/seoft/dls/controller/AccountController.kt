@@ -55,4 +55,9 @@ class AccountController {
         )
     }
 
+    @GetMapping("/convertAll")
+    fun convertAll() {
+        accountService.convertAll()
+    }
+
 }

@@ -1,9 +1,7 @@
 package kr.co.seoft.dls.service
 
 import com.google.gson.Gson
-import kr.co.seoft.dls.model.Account
-import kr.co.seoft.dls.model.DeviceWithAccounts
-import kr.co.seoft.dls.model.SALT3
+import kr.co.seoft.dls.model.*
 import kr.co.seoft.dls.utils.AccountFileUtils
 import kr.co.seoft.dls.utils.CryptUtils
 import org.springframework.stereotype.Service
@@ -87,6 +85,22 @@ class AccountService {
             ?.accounts
             ?.map { Account(decrypt(it.id, salt1, salt2), decrypt(it.pw, salt1, salt2)) }
             ?: emptyList()
+    }
+
+    fun convertAll() {
+        val jsonString = AccountFileUtils.readAccountFile()
+        val deviceWithAccountList = gson.fromJson(jsonString, Array<DeviceWithAccounts>::class.java).toList()
+        val encryptedDeviceWithAccountList = deviceWithAccountList.map {
+            val salt1 = getSalt1(it.deviceId)
+            val eDeviceId = encrypt(it.deviceId, salt1, SALT2)
+            val accounts = it.accounts.map { account ->
+                val eId = encrypt(account.id, salt1, SALT2)
+                val ePw = encrypt(account.pw, salt1, SALT2)
+                Account(eId, ePw)
+            }
+            DeviceWithAccounts(eDeviceId, accounts)
+        }
+        AccountFileUtils.saveAccountFile(gson.toJson(encryptedDeviceWithAccountList))
     }
 
 }
